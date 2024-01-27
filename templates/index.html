@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Pattern Checker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        p {
+            color: #333;
+        }
+
+        p.error {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dark Pattern Checker</h1>
+    <form id="darkPatternForm">
+        <label for="urlInput">Enter the URL:</label>
+        <input type="text" id="urlInput" name="url" required>
+        <button type="button" onclick="checkForDarkPatterns()">Check for Dark Patterns</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        async function checkForDarkPatterns() {
+            const url = document.getElementById('urlInput').value;
+            const response = await fetch(`/check?url=${encodeURIComponent(url)}`);
+            const result = await response.json();
+
+            displayResult(result);
+        }
+
+        function displayResult(result) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+
+            if (result.error) {
+                resultDiv.innerHTML = `<p>Error: ${result.error}</p>`;
+            } else {
+                if (result.detectedPatterns.length > 0) {
+                    resultDiv.innerHTML = `<p>Dark patterns detected: ${result.detectedPatterns.join(', ')}</p>`;
+                } else {
+                    resultDiv.innerHTML = '<p>No dark patterns detected.</p>';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
