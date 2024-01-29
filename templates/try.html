@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dark patterns</title>
+</head>
+<body>
+    <form id="darkPatternForm">
+        <label for="urlInput">Enter the URL:</label>
+        <input type="text" id="urlInput" name="url" required>
+        <button type="button" onclick="checkForDarkPatterns()">Check for Dark Patterns</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        async function checkForDarkPatterns() {
+            const url = document.getElementById('urlInput').value;
+            try {
+                const response = await fetch(`/check?url=${encodeURIComponent(url)}`);
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status} ${response.statusText}`);
+                }
+                const result = await response.json();
+                displayResult(result);
+            } catch (error) {
+                displayResult({ error: error.message });
+            }
+        }
+
+        function displayResult(result) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            if (result.error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${result.error}</p>`;
+            } else {
+                if (result.detectedPatterns.length > 0) {
+                    resultDiv.innerHTML = `<p>Dark patterns detected: ${result.detectedPatterns.join(', \t\t')}</p>`;
+                } else {
+                    resultDiv.innerHTML = '<p>No dark patterns detected.</p>';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

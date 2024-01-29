@@ -7,33 +7,30 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            background-image:linear-gradient(to bottom,#000,#1f1f1f,#3a3a3a,#414141);
             color: #333;
             margin: 0;
             padding: 0;
+            width:400px;
         }
-
         h1 {
             color: #333;
             text-align: center;
             margin-top: 20px;
         }
-
         form {
-            max-width: 600px;
+            max-width: 200px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color:aqua ;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
-
         label {
             display: block;
             margin-bottom: 10px;
             color: #555;
         }
-
         input {
             width: 100%;
             padding: 10px;
@@ -42,7 +39,6 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
         button {
             background-color: #4caf50;
             color: #fff;
@@ -51,12 +47,10 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #45a049;
         }
-
-        #result {
+        #resultList {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
@@ -64,7 +58,14 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
-
+        #hello{
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
         p {
             color: #333;
         }
@@ -75,38 +76,15 @@
     </style>
 </head>
 <body>
-    <h1>Dark Pattern Checker</h1>
+    <h1>Dark Pattern Detector</h1>
     <form id="darkPatternForm">
-        <label for="urlInput">Enter the URL:</label>
-        <input type="text" id="urlInput" name="url" required>
-        <button type="button" onclick="checkForDarkPatterns()">Check for Dark Patterns</button>
-    </form>
-
-    <div id="result"></div>
-
-    <script>
-        async function checkForDarkPatterns() {
-            const url = document.getElementById('urlInput').value;
-            const response = await fetch(`/check?url=${encodeURIComponent(url)}`);
-            const result = await response.json();
-
-            displayResult(result);
-        }
-
-        function displayResult(result) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '';
-
-            if (result.error) {
-                resultDiv.innerHTML = `<p>Error: ${result.error}</p>`;
-            } else {
-                if (result.detectedPatterns.length > 0) {
-                    resultDiv.innerHTML = `<p>Dark patterns detected: ${result.detectedPatterns.join(', ')}</p>`;
-                } else {
-                    resultDiv.innerHTML = '<p>No dark patterns detected.</p>';
-                }
-            }
-        }
-    </script>
+        <label for="website_url">Enter Website URL:</label>
+        <input type="text" id="website_url" name="website_url" placeholders="https://url" required>
+        <button type="button" id="predictButton">Analyse the Website</button>
+    </form>    
+    <ul id="resultList"></ul>
+    <div id="hello"><a href="https://www.deceptive.design">What are Dark Patterns</a></div>
+    <script src="/static/popup.js"></script>
 </body>
+</html>
 </html>
